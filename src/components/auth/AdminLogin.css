@@ -1,0 +1,30 @@
+.admin-login {
+    padding: 10px 20px;
+
+    form {
+        max-width: 400px;
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+            /* border: 2px solid red;; */
+
+            button {
+                padding: 10px;
+
+                &:hover {
+                    background-color: #0056b3;
+                    color: white;
+                }
+            }
+
+            input {
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+        }
+    }
+}

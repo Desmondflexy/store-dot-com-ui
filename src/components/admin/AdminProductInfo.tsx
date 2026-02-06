@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { apiService } from "../../lib/api.ts";
-import { formatDateTime, handleErrorToast } from "../../utils/helpers";
+import { formatDateTime, formatNumber, handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import "./AdminProductInfo.css";
 
@@ -18,8 +18,6 @@ export default function AdminProductInfo() {
         })
     }, [id]);
 
-    console.log(product)
-
     if (!product) return <p>Loading...</p>
 
     return <div className="product-details">
@@ -32,7 +30,7 @@ export default function AdminProductInfo() {
 
             <div className="product-summary">
                 <h1 className="product-name">{product.name}</h1>
-                <p className="product-price">₦{product.price}</p>
+                <p className="product-price">{formatNumber(product.price)}</p>
 
                 <span className={`status ${product.isPublished ? "published" : ""}`}>{product.isPublished ? "Published" : ""}</span>
             </div>
@@ -66,7 +64,7 @@ export default function AdminProductInfo() {
 
             <div className="product-card">
                 <span>Price</span>
-                <strong>₦{product.price}</strong>
+                <strong>{formatNumber(product.price)}</strong>
             </div>
         </div>
 

@@ -42,6 +42,10 @@ class ApiService {
     viewProductInfo(id: string) {
         return this.Api.get(`product/${id}`);
     }
+
+    addItemToCart(payLoad: { productId: string; qty?: number; cartId?: string }) {
+        return this.Api.post("cart", payLoad);
+    }
 }
 
 export const apiService = new ApiService();

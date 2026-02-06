@@ -12,30 +12,6 @@ body {
     margin: 0;
 }
 
-.auth-form {
-    max-width: 400px;
-    &>div {
-        display: flex;
-        flex-direction: column;
-        margin: 20px;
-
-        button {
-            padding: 10px;
-
-            &:hover {
-                background-color: #0056b3;
-                color: white;
-            }
-        }
-
-        input {
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;}
-    }
-}
-
 .p-10 {
     padding: 0 10px;
 }

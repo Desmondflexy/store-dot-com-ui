@@ -3,9 +3,8 @@ import { apiService } from "../../lib/api.ts";
 import { handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
-
-type LoginInput = { email: string; password: string }
+import { Link, useNavigate } from "react-router-dom";
+import "./AdminLogin.css";
 
 export function AdminLogin() {
     const { register, handleSubmit } = useForm<LoginInput>();
@@ -20,10 +19,10 @@ export function AdminLogin() {
         })
     }
 
-    return <div>
+    return <div className="admin-login">
         <h2>Admin Login</h2>
 
-        <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <label htmlFor="email">Email</label>
                 <input {...register("email")} type="text" placeholder="Email" name="email" id="email" />
@@ -34,5 +33,8 @@ export function AdminLogin() {
             </div>
             <div><button>Login</button></div>
         </form>
+        <Link to={ROUTES_PATH.HOME}>Go to main page</Link>
     </div>
 }
+
+type LoginInput = { email: string; password: string }

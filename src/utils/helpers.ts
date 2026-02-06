@@ -1,14 +1,13 @@
-/** Formats num from kobo to naira. */
 export function formatNumber(num: number) {
-    num /= 100;
+    // num /= 100;
     const formattedNumber = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'NGN',
+        // style: 'currency',
+        // currency: 'ngn',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }).format(num);
 
-    return formattedNumber;
+    return "₦" + formattedNumber;
 }
 
 /**Show paystack payment window */
@@ -71,4 +70,11 @@ export function getRoutePath(route: string, isDeep: boolean = false) {
     let result = lastElement;
     if (isDeep) result = result + '/*';
     return result;
+}
+
+export function shortenText(text: string, maxLength: number) {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.slice(0, maxLength) + ' ...';
 }

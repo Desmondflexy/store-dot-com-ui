@@ -4,4 +4,5 @@
 - [x] admin add product
 - [x] admin view product list
 - [x] admin view product details
-- [ ] customer product listing page
+- [x] customer product listing page
+- [ ] customer can add to cart

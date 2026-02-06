@@ -1,0 +1,23 @@
+.shop-product-list {
+    margin: 10px;
+
+    img {
+        width: 200px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    li {
+        position: relative;
+        max-width: 200px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+    }
+}

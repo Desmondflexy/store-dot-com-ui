@@ -15,4 +15,7 @@ export const ROUTES_PATH = {
     ADMIN_ADD_PRODUCT: "/admin/add-product",
     ADMIN_INVENTORY: "/admin/products",
     ADMIN_PRODUCT_DETAILS: "/admin/products/:id",
+    SHOP: "/shop",
+    SHOP_PRODUCTS: "/shop/products",
+    SHOP_PRODUCT_DETAILS: "/shop/products/:id",
 }
