@@ -78,3 +78,8 @@ export function shortenText(text: string, maxLength: number) {
     }
     return text.slice(0, maxLength) + ' ...';
 }
+
+export function getCartItemsCount(items: IItem[]) {
+    if (!items) return 0;
+    return items.reduce((s, i) => s + i.quantity, 0);
+}

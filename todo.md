@@ -5,4 +5,7 @@
 - [x] admin view product list
 - [x] admin view product details
 - [x] customer product listing page
-- [ ] customer can add to cart
+- [x] customer can add to cart
+- [x] remove from cart
+- [ ] view cart
+- [ ] search products

@@ -14,10 +14,25 @@
     }
 
     li {
-        position: relative;
         max-width: 200px;
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        div.buttons {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            display: flex;
+            justify-content:space-around;
+            align-items: center;
+
+            button {
+                width: 30px;
+                padding: 8px;
+            }
+        }
     }
 }

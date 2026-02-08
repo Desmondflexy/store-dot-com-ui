@@ -39,12 +39,32 @@ class ApiService {
         return this.Api.get("product");
     }
 
+    adminViewInventory() {
+        return this.Api.get("product/admin");
+    }
+
     viewProductInfo(id: string) {
         return this.Api.get(`product/${id}`);
     }
 
-    addItemToCart(payLoad: { productId: string; qty?: number; cartId?: string }) {
-        return this.Api.post("cart", payLoad);
+    addItemToCart(payLoad: { productId: number; cartId?: string | null }) {
+        return this.Api.post<CartResponse>("cart", payLoad);
+    }
+
+    removeItemFromCart(payload: { productId: number, cartId: string }) {
+        return this.Api.patch<CartResponse>("cart/remove", payload)
+    }
+
+    getCartByUuid(uuid: string) {
+        return this.Api.get<CartResponse>(`cart/${uuid}`);
+    }
+
+    authMe() {
+        return this.Api.get("auth/me");
+    }
+
+    authAdminMe() {
+        return this.Api.get("auth/admin-me");
     }
 }
 

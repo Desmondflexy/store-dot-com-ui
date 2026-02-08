@@ -12,7 +12,7 @@ export function AdminLogin() {
 
     function onSubmit(data: LoginInput) {
         apiService.adminLogin(data.email, data.password).then((res) => {
-            localStorage.setItem("token", res.data);
+            localStorage.setItem("token", res.data.token);
             navigate(ROUTES_PATH.ADMIN_DASHBOARD);
         }).catch(err => {
             handleErrorToast(err, toast);

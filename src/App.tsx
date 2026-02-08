@@ -15,6 +15,8 @@ function App() {
                 <Route path={getRoutePath(ROUTES_PATH.SHOP, true)} element={<Shop />} />
                 <Route path={getRoutePath(ROUTES_PATH.AUTH, true)} element={<Auth />} />
                 <Route path={getRoutePath(ROUTES_PATH.ADMIN, true)} element={<Admin />} />
+
+                <Route path='*' element={<h1>Page not found!</h1>} />
             </Routes>
             <ToastContainer/>
         </BrowserRouter>

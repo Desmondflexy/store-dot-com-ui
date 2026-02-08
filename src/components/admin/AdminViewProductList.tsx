@@ -10,13 +10,13 @@ export default function AdminViewProductList() {
     const [data, setData] = useState<dataResponse[]>([]);
 
     useEffect(() => {
-        apiService.viewProductList().then(res => {
+        apiService.adminViewInventory().then(res => {
             setData(res.data)
         }).catch(err => {
             handleErrorToast(err, toast)
         })
     }, []);
-    
+
     const navigate = useNavigate();
     function handleViewDetailsClick(id:string) {
         navigate(ROUTES_PATH.ADMIN_PRODUCT_DETAILS.replace(":id", id));
