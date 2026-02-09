@@ -17,37 +17,43 @@ export default function ShopCart() {
         <h2>Shopping Cart</h2>
 
         <table>
-            <tr>
-                <th>S/N</th>
-                <th>Image</th>
-                <th>Item</th>
-                <th>Unit Price</th>
-                <th>Qty</th>
-                <th>Total</th>
-            </tr>
-            {
-                cart.items.map((item, sn) => (
-                    <tr key={item.id}>
-                        <td>{sn + 1}</td>
-                        <td><img width={100} src={item.image} alt={item.name} /></td>
-                        <td>{item.name}</td>
-                        <td>{formatNumber(item.unitPrice, 0)}</td>
-                        <td className="buttons">
-                            <CartButton
-                                qty={item.quantity}
-                                onIncrease={() => cartActions.add(item.productId)}
-                                onDecrease={() => cartActions.remove(item.productId)}
-                            />
-                        </td>
-                        <td>{formatNumber(item.quantity * item.unitPrice, 0)}</td>
-                    </tr>
-                ))
-            }
-            <tr>
-                <td colSpan={4}>Total</td>
-                <td>{itemsCount}</td>
-                <td>{cartTotal}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Image</th>
+                    <th>Item</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    cart.items.map((item, sn) => (
+                        <tr key={item.id}>
+                            <td>{sn + 1}</td>
+                            <td><img width={100} src={item.image} alt={item.name} /></td>
+                            <td>{item.name}</td>
+                            <td>{formatNumber(item.unitPrice, 0)}</td>
+                            <td className="buttons">
+                                <CartButton
+                                    qty={item.quantity}
+                                    onIncrease={() => cartActions.add(item.productId)}
+                                    onDecrease={() => cartActions.remove(item.productId)}
+                                />
+                            </td>
+                            <td>{formatNumber(item.quantity * item.unitPrice, 0)}</td>
+                        </tr>
+                    ))
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colSpan={4}>Total</th>
+                    <td>{itemsCount}</td>
+                    <td>{cartTotal}</td>
+                </tr>
+            </tfoot>
         </table>
         <div>
             <button>Checkout</button>

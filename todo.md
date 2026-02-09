@@ -7,5 +7,5 @@
 - [x] customer product listing page
 - [x] customer can add to cart
 - [x] remove from cart
-- [ ] view cart
+- [x] view cart
 - [ ] search products
