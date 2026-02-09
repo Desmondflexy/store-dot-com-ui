@@ -30,7 +30,7 @@ export default function AdminProductInfo() {
 
             <div className="product-summary">
                 <h1 className="product-name">{product.name}</h1>
-                <p className="product-price">{formatNumber(product.price)}</p>
+                <p className="product-price">{formatNumber(product.price, 0)}</p>
 
                 <span className={`status ${product.isPublished ? "published" : ""}`}>{product.isPublished ? "Published" : ""}</span>
             </div>
@@ -64,7 +64,7 @@ export default function AdminProductInfo() {
 
             <div className="product-card">
                 <span>Price</span>
-                <strong>{formatNumber(product.price)}</strong>
+                <strong>{formatNumber(product.price, 0)}</strong>
             </div>
         </div>
 

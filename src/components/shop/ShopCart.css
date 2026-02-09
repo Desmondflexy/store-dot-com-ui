@@ -1,0 +1,22 @@
+.shop-cart {
+    padding: 0 20px;
+
+    td, th {
+        border: 1px solid red;
+        padding: 10px;
+    }
+
+    table {
+        max-width: 700px;
+    }
+
+    td.buttons {
+        width: 100px;
+        text-align: center;
+
+        button, span {
+            display: inline-block;
+            width: 30px;
+        }
+    }
+}

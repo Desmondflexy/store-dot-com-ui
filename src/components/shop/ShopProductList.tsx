@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react"
 import { apiService } from "../../lib/api.ts";
-import { formatNumber, getCartItemsCount, handleErrorToast, shortenText } from "../../utils/helpers.ts";
+import { formatNumber, handleErrorToast, shortenText } from "../../utils/helpers.ts";
 import { toast } from "react-toastify";
 import "./ShopProductList.css";
-import { useCart } from "../../utils/hooks.ts";
+import { useCart, useCartActions } from "../../utils/hooks.ts";
+import CartButton from "./CartButton.tsx";
 
 export default function ShopProductList() {
     const [data, setData] = useState<ProductListResponse[]>([]);
     const cartContext = useCart();
-
-    const isItemIncart = (productId: number) => {
-        const cartItems = cartContext.cart?.items;
-        return cartItems?.some(i => i.productId === productId);
-    }
+    const cartActions = useCartActions();
 
     useEffect(() => {
         apiService.viewProductList().then(res => {
@@ -22,30 +19,17 @@ export default function ShopProductList() {
         })
     }, []);
 
-    const handleAddToCart = (productId: number) => {
-        const cartId = localStorage.getItem("cartId");
-        const payload = cartId ? { productId, cartId } : { productId };
-        apiService.addItemToCart(payload).then(res => {
-            toast.success("added to cart successfully");
-            localStorage.setItem("cartId", res.data.uuid);
-            cartContext.setCart(res.data);
-            cartContext.setCount(getCartItemsCount(res.data.items));
-        }).catch(err => {
-            console.log(err)
-            handleErrorToast(err, toast);
-        })
+    const cart = cartContext.cart;
+
+    const isItemIncart = (productId: number) => {
+        if (!cart) return false;
+        return cart.items.some(i => i.productId === productId);
     }
 
-    const handleRemoveFromCart = (productId: number) => {
-        const cart = cartContext.cart!;
-        apiService.removeItemFromCart({productId, cartId: cart.uuid}).then(res => {
-            toast.success("item removed cart successfully");
-            cartContext.setCart(res.data);
-            cartContext.setCount(getCartItemsCount(res.data.items));
-        }).catch(err => {
-            console.log(err)
-            handleErrorToast(err, toast);
-        })
+    const getItemQty = (productId: number) => {
+        if (!cart) return 0;
+        const item = cart.items.find(i => i.productId === productId);
+        return item? item.quantity : 0;
     }
 
     return <div className="shop-product-list">
@@ -55,13 +39,13 @@ export default function ShopProductList() {
                     <div>
                         <img onClick={() => alert(`Product ${product.id} info`)} src={product.images[0].fileUrl} alt={product.name} />
                         <p>{shortenText(product.name, 50)}</p>
-                        <p>{formatNumber(product.price)}</p>
+                        <p>{formatNumber(product.price, 0)}</p>
                     </div>
                     <div className="buttons">
                         {
                             isItemIncart(product.id)
-                            ? <><button onClick={() => handleAddToCart(product.id)}>+</button>100<button onClick={() => handleRemoveFromCart(product.id)}>-</button></>
-                            : <button style={{width: "100px"}} onClick={() => handleAddToCart(product.id)}>Add to cart</button>
+                            ? <CartButton qty={getItemQty(product.id)} onIncrease={() => cartActions.add(product.id)} onDecrease={() => cartActions.remove(product.id)} />
+                            : <button style={{width: "100px"}} onClick={() => cartActions.add(product.id)}>Add to cart</button>
                         }
                     </div>
                 </li>

@@ -1,10 +1,10 @@
-export function formatNumber(num: number) {
+export function formatNumber(num: number, frac:number) {
     // num /= 100;
     const formattedNumber = new Intl.NumberFormat('en-US', {
         // style: 'currency',
         // currency: 'ngn',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        minimumFractionDigits: frac,
+        maximumFractionDigits: frac
     }).format(num);
 
     return "₦" + formattedNumber;
@@ -82,4 +82,8 @@ export function shortenText(text: string, maxLength: number) {
 export function getCartItemsCount(items: IItem[]) {
     if (!items) return 0;
     return items.reduce((s, i) => s + i.quantity, 0);
+}
+
+export function getCartTotal(items: IItem[]) {
+    return items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
 }
