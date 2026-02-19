@@ -18,5 +18,6 @@ export const ROUTES_PATH = {
     SHOP: "/shop",
     SHOP_PRODUCTS: "/shop/products",
     SHOP_PRODUCT_DETAILS: "/shop/products/:id",
-    SHOPPING_CART: "/shop/cart"
+    SHOPPING_CART: "/shop/cart",
+    PROFILE: "./profile"
 }

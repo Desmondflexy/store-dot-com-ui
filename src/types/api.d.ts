@@ -5,3 +5,13 @@ declare type CartResponse = {
     uuid: string;
     items: IItem[];
 };
+
+declare type UserResponse = {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    role: string;
+    createdAt: Date;
+}

@@ -13,12 +13,24 @@ export default function CartProvider(props: Props) {
                 const itemsCount = getCartItemsCount(res.data.items);
                 setCount(itemsCount);
                 setCart(res.data);
-            }).catch((err) => {
+                console.log('guest', res.data);
+            }).catch(() => {
                 setCount(0);
-                console.log(err);
             });
         }
     }, [cartId]);
+
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if (token) {
+            apiService.getMyCart().then(res => {
+                const itemsCount = getCartItemsCount(res.data.items);
+                setCount(itemsCount);
+                setCart(res.data);
+                console.log('user', res.data);
+            }).catch(() => { })
+        }
+    }, [token]);
 
     const providerValue = {
         count, setCount,

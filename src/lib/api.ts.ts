@@ -66,6 +66,26 @@ class ApiService {
     authAdminMe() {
         return this.Api.get("auth/admin-me");
     }
+
+    createCustomer(data: any) {
+        return this.Api.post("auth/signup", data);
+    }
+
+    loginCustomer(data: any) {
+        return this.Api.post("auth/login", data);
+    }
+
+    getProfile() {
+        return this.Api.get<UserResponse>("user/profile");
+    }
+
+    getMyCart() {
+        return this.Api.get<CartResponse>("cart");
+    }
+
+    logout() {
+        return this.Api.post("auth/logout");
+    }
 }
 
 export const apiService = new ApiService();
