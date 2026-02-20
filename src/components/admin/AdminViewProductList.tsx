@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { apiService } from "../../lib/api.ts"
+import { apiService } from "../../lib/api.service.ts"
 import { handleErrorToast } from "../../utils/helpers.ts"
 import { toast } from "react-toastify"
 import "./AdminViewProductList.css"
@@ -18,7 +18,7 @@ export default function AdminViewProductList() {
     }, []);
 
     const navigate = useNavigate();
-    function handleViewDetailsClick(id:string) {
+    function handleViewDetailsClick(id: string) {
         navigate(ROUTES_PATH.ADMIN_PRODUCT_DETAILS.replace(":id", id));
     }
 

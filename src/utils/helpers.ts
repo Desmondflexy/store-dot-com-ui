@@ -59,19 +59,6 @@ export function handleErrorToast(err: any, toast: any, warn: boolean = false) {
     }
 }
 
-/**Utility function to get route path attribute dynamically */
-export function getRoutePath(route: string, isDeep: boolean = false) {
-    const paths = route.split('/');
-    const beforeLast = paths[paths.length - 2];
-    let lastElement = paths[paths.length - 1];
-    if (lastElement[0] === ':') {
-        lastElement = beforeLast + '/' + lastElement;
-    }
-    let result = lastElement;
-    if (isDeep) result = result + '/*';
-    return result;
-}
-
 export function shortenText(text: string, maxLength: number) {
     if (text.length <= maxLength) {
         return text;

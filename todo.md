@@ -11,9 +11,9 @@
 - [ ] search products
 - [ ] make an order
 - [x] customers can signup
-- [ ] owner can create staff
-- [ ] customer can login
+- [x] customer can login
 - [ ] admin can create staff
   - [ ] staff get email with login credentials
 - [ ] staff should change password on first login
 - [ ] customer can view their profile
+- [ ] customer forgot/reset password

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { apiService } from "../../lib/api.ts";
+import { apiService } from "../../lib/api.service.ts";
 import { formatDateTime, formatNumber, handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import "./AdminProductInfo.css";

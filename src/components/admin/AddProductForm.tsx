@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { uploadImages } from "../../lib/upload.ts";
-import { apiService } from "../../lib/api.ts.ts";
+import { apiService } from "../../lib/api.service.ts";
 import "./AddProductForm.css";
 import { toast } from "react-toastify";
 import { handleErrorToast } from "../../utils/helpers.ts";

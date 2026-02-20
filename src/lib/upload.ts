@@ -1,4 +1,4 @@
-import { apiService } from "./api.ts";
+import { apiService } from "./api.service.ts";
 
 export async function uploadImages(files: File[]) {
     const formData = new FormData();

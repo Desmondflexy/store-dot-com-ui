@@ -1,31 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatNumber, getCartItemsCount, getCartTotal } from "../../utils/helpers";
-import { useCart, useCartActions } from "../../utils/hooks";
 import CartButton from "./CartButton";
 import "./ShopCart.css";
 import { ROUTES_PATH } from "../../utils/constants";
-import { apiService } from "../../lib/api.ts";
+import { useCartActions } from "../../hooks/cart-actions.hook";
+import { useCart } from "../../hooks/cart.hook";
+import { useUser } from "../../hooks/user.hook";
+import { toast } from "react-toastify";
 
 export default function ShopCart() {
     const cartContext = useCart();
     const cartActions = useCartActions();
     const navigate = useNavigate();
+    const userContext = useUser();
 
     const cart = cartContext.cart;
-    console.log(cart)
-    if (!cart) return <p>Empty cart!</p>
+    if (!cart) return <div className="shop-cart">
+        <p>Empty cart! <Link to={ROUTES_PATH.SHOP_PRODUCTS}>Go to shop</Link></p>
+    </div>
 
     const itemsCount = getCartItemsCount(cart.items);
     const cartTotal = formatNumber(getCartTotal(cart.items), 0);
 
     const handleCheckout = () => {
-        apiService.authMe().then(res => {
-            console.log("to be implemented");
-        }).catch(err => {
+        if (userContext.user) {
+            const answer = confirm("Proceed to checkout?")
+            if (answer === true) {
+                navigate(ROUTES_PATH.CHECKOUT);
+            }
+        } else {
+            toast.dark("Pls login to continue");
             navigate(ROUTES_PATH.LOGIN);
-            console.log(456)
-            console.log(err.response)
-        })
+        }
     }
 
     return <div className="shop-cart">

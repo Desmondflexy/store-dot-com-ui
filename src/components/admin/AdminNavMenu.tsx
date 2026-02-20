@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { ROUTES_PATH } from "../../utils/constants";
 import "./AdminNavMenu.css";
+import Logout from "../auth/Logout";
 
 export default function AdminNavMenu() {
     return <ul className="admin-nav-menu">
@@ -14,7 +15,7 @@ export default function AdminNavMenu() {
             <NavLink to={ROUTES_PATH.ADMIN_ADD_PRODUCT}>Add Product</NavLink>
         </li>
         <li>
-            <NavLink to={ROUTES_PATH.LOGOUT}>Logout</NavLink>
+            <Logout />
         </li>
     </ul>
 }

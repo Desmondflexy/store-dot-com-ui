@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { apiService } from "../../lib/api.ts";
+import { apiService } from "../../lib/api.service.ts";
 import { handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "../../utils/constants";
@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 
 export function AdminLogin() {
+    console.log(123)
     const { register, handleSubmit } = useForm<LoginInput>();
     const navigate = useNavigate();
 
@@ -25,11 +26,11 @@ export function AdminLogin() {
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <label htmlFor="email">Email</label>
-                <input {...register("email")} type="text" placeholder="Email" name="email" id="email" />
+                <input {...register("email")} type="text" placeholder="Email" name="email" id="email" required />
             </div>
             <div>
                 <label htmlFor="password">Password</label>
-                <input {...register("password")} type="password" placeholder="Password" name="password" id="password" />
+                <input {...register("password")} type="password" placeholder="Password" name="password" id="password" required />
             </div>
             <div><button>Login</button></div>
         </form>

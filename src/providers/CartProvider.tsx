@@ -1,36 +1,39 @@
 import { useEffect, useState } from "react";
-import { CartContext } from "../utils/contexts";
-import { apiService } from "../lib/api.ts";
-import { getCartItemsCount } from "../utils/helpers.ts";
+import { apiService } from "../lib/api.service.ts";
+import { getCartItemsCount, handleErrorToast } from "../utils/helpers.ts";
+import { toast } from "react-toastify";
+import { useUser } from "../hooks/user.hook.ts";
+import { CartContext } from "../contexts/cart.context.ts";
 
-export default function CartProvider(props: Props) {
+export default function CartProvider({ children }: { children: React.ReactNode }) {
     const [count, setCount] = useState(0);
-    const [cart, setCart] = useState<CartResponse | null>(null)
-    const cartId = localStorage.getItem("cartId");
-    useEffect(() => {
-        if (cartId) {
-            apiService.getCartByUuid(cartId).then(res => {
-                const itemsCount = getCartItemsCount(res.data.items);
-                setCount(itemsCount);
-                setCart(res.data);
-                console.log('guest', res.data);
-            }).catch(() => {
-                setCount(0);
-            });
-        }
-    }, [cartId]);
+    const [cart, setCart] = useState<ICart | null>(null)
+    const guestCartId = localStorage.getItem("cartId");
 
-    const token = localStorage.getItem("token");
+    const userContext = useUser();
     useEffect(() => {
-        if (token) {
+        if (userContext.user) {
             apiService.getMyCart().then(res => {
                 const itemsCount = getCartItemsCount(res.data.items);
                 setCount(itemsCount);
                 setCart(res.data);
-                console.log('user', res.data);
-            }).catch(() => { })
+                localStorage.removeItem("cartId");
+            }).catch(err => {
+                console.log(err.message)
+                handleErrorToast("An error occured", toast);
+            })
+        } else if (guestCartId) {
+            apiService.findGuestCart(guestCartId).then(res => {
+                const itemsCount = getCartItemsCount(res.data.items);
+                setCount(itemsCount);
+                setCart(res.data);
+            }).catch(err => {
+                if (err.status === 404) {
+                    localStorage.removeItem("cartId");
+                }
+            });
         }
-    }, [token]);
+    }, [userContext.user, guestCartId]);
 
     const providerValue = {
         count, setCount,
@@ -39,11 +42,7 @@ export default function CartProvider(props: Props) {
 
     return (
         <CartContext.Provider value={providerValue}>
-            {props.children}
+            {children}
         </CartContext.Provider>
     );
-}
-
-type Props = {
-    children: React.ReactNode;
 }

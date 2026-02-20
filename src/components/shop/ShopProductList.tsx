@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
-import { apiService } from "../../lib/api.ts";
+import { apiService } from "../../lib/api.service.ts";
 import { formatNumber, handleErrorToast, shortenText } from "../../utils/helpers.ts";
 import { toast } from "react-toastify";
 import "./ShopProductList.css";
-import { useCart, useCartActions } from "../../utils/hooks.ts";
 import CartButton from "./CartButton.tsx";
+import { useCart } from "../../hooks/cart.hook.ts";
+import { useCartActions } from "../../hooks/cart-actions.hook.ts";
 
 export default function ShopProductList() {
-    const [data, setData] = useState<ProductListResponse[]>([]);
+    const [data, setData] = useState<ProductResponse[]>([]);
     const cartContext = useCart();
     const cartActions = useCartActions();
 
@@ -29,7 +30,7 @@ export default function ShopProductList() {
     const getItemQty = (productId: number) => {
         if (!cart) return 0;
         const item = cart.items.find(i => i.productId === productId);
-        return item? item.quantity : 0;
+        return item ? item.quantity : 0;
     }
 
     return <div className="shop-product-list">
@@ -44,22 +45,12 @@ export default function ShopProductList() {
                     <div className="buttons">
                         {
                             isItemIncart(product.id)
-                            ? <CartButton qty={getItemQty(product.id)} onIncrease={() => cartActions.add(product.id)} onDecrease={() => cartActions.remove(product.id)} />
-                            : <button style={{width: "100px"}} onClick={() => cartActions.add(product.id)}>Add to cart</button>
+                                ? <CartButton qty={getItemQty(product.id)} onIncrease={() => cartActions.add(product.id)} onDecrease={() => cartActions.remove(product.id)} />
+                                : <button style={{ width: "100px" }} onClick={() => cartActions.add(product.id)}>Add to cart</button>
                         }
                     </div>
                 </li>
             ))}
         </ul>
     </div>
-}
-
-type ProductListResponse = {
-    id: number;
-    name: string;
-    description: string;
-    images: { fileUrl: string }[];
-    price: number;
-    soldCount: number;
-    stock: number;
 }

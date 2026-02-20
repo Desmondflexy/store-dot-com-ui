@@ -3,8 +3,8 @@ export const ROUTES_PATH = {
     HOME: "/",
     AUTH: "/auth",
     ADMIN_LOGIN: "/auth/admin-login",
-    LOGIN: "/auth/login",
-    SIGNUP: "/auth/signup",
+    LOGIN: "/shop/login",
+    SIGNUP: "/shop/signup",
     ADMIN_SIGNUP: "/auth/admin-signup",
     LOGOUT: "/admin/logout",
     FORGOT_PASSWORD: "/auth/forgot-password",
@@ -19,5 +19,6 @@ export const ROUTES_PATH = {
     SHOP_PRODUCTS: "/shop/products",
     SHOP_PRODUCT_DETAILS: "/shop/products/:id",
     SHOPPING_CART: "/shop/cart",
-    PROFILE: "./profile"
+    PROFILE: "/shop/profile",
+    CHECKOUT: "/shop/checkout",
 }

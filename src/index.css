@@ -15,3 +15,12 @@ body {
 .p-10 {
     padding: 0 10px;
 }
+
+button.logout-btn {
+    background-color: red;
+    color: white;
+
+    &:hover {
+        background-color: darkred;
+    }
+}
