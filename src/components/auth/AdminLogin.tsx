@@ -6,7 +6,7 @@ import { ROUTES_PATH } from "../../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 
-export function AdminLogin() {
+export default function AdminLogin() {
     console.log(123)
     const { register, handleSubmit } = useForm<LoginInput>();
     const navigate = useNavigate();

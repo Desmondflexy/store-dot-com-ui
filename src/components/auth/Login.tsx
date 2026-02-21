@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../hooks/user.hook.ts";
 
-export function Login() {
+export default function Login() {
     const { register, handleSubmit } = useForm<LoginInput>();
     const navigate = useNavigate();
     const guestCartId = localStorage.getItem("cartId");
@@ -15,17 +15,12 @@ export function Login() {
 
     const onSubmit = async (data: LoginInput) => {
         try {
-            const loginResponse = await apiService.loginCustomer({
-                ...data,
-                guestCartId: guestCartId || undefined
-            });
-
-            const { token, cartId } = loginResponse.data;
-
+            const loginData = { ...data, guestCartId: guestCartId || undefined }
+            const res = await apiService.loginCustomer(loginData);
+            const { token, cartId, user } = res.data;
             localStorage.setItem("token", token);
-            localStorage.setItem("cartId", cartId);
-            const getProfileResponse = await apiService.getProfile();
-            userContext.setUser(getProfileResponse.data);
+            userContext.setUser(user);
+            localStorage.removeItem("cartId");
 
             if (cartId) {
                 navigate(ROUTES_PATH.SHOPPING_CART);
@@ -33,13 +28,12 @@ export function Login() {
                 navigate(ROUTES_PATH.SHOP);
             }
             toast.success("Login successful!")
-
         } catch (err) {
             handleErrorToast(err, toast);
         }
     };
 
-    return <div className="signup">
+    return <div className="login">
         <h2>Welcome back!</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
             <p>Login to continue</p>

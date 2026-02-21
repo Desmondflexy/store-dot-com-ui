@@ -6,7 +6,7 @@ import AdminNavMenu from "./AdminNavMenu";
 import { apiService } from "../../lib/api.service.ts";
 import { toast } from "react-toastify";
 
-export function Admin() {
+export default function Admin() {
     const navigate = useNavigate();
 
     useEffect(() => {

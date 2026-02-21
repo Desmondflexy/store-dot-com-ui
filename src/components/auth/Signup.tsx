@@ -7,31 +7,31 @@ import { handleErrorToast } from "../../utils/helpers.ts";
 import { toast } from "react-toastify";
 import { useUser } from "../../hooks/user.hook.ts";
 
-export function Signup() {
+export default function Signup() {
     const { register, handleSubmit } = useForm<RegisterInput>();
     const navigate = useNavigate();
-    const localCartId = localStorage.getItem("cartId");
+    const guestCartId = localStorage.getItem("cartId");
     const userContext = useUser();
 
-    const onSubmit = (data: RegisterInput) => {
-        const guestCartId = localCartId ? localCartId : undefined;
-        apiService.createCustomer({ ...data, guestCartId })
-            .then(res => {
-                const { token, cartId, user } = res.data;
-                localStorage.setItem("token", token);
-                userContext.setUser(user);
-                localStorage.removeItem("cartId");
+    const onSubmit = async (data: RegisterInput) => {
+        try {
+            const createData = { ...data, guestCartId: guestCartId || undefined }
+            const res = await apiService.createCustomer(createData);
+            const { token, cartId, user } = res.data;
+            localStorage.setItem("token", token);
+            userContext.setUser(user);
+            localStorage.removeItem("cartId");
 
-                if (cartId) {
-                    navigate(ROUTES_PATH.SHOPPING_CART);
-                } else {
-                    navigate(ROUTES_PATH.SHOP);
-                }
-            })
-            .catch(err => {
-                handleErrorToast(err, toast);
-            })
+            if (cartId) {
+                navigate(ROUTES_PATH.SHOPPING_CART);
+            } else {
+                navigate(ROUTES_PATH.SHOP);
+            }
+        } catch (err) {
+            handleErrorToast(err, toast);
+        }
     }
+
     return <div className="signup">
 
         <h2>Create an account</h2>
