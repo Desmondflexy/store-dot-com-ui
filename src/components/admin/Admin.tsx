@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { handleErrorToast } from "../../utils/helpers";
-import { ROUTES_PATH } from "../../utils/constants";
+import { ROUTES_PATH } from "../../utils/routes.ts";
 import { useEffect } from "react";
 import AdminNavMenu from "./AdminNavMenu";
 import { apiService } from "../../lib/api.service.ts";

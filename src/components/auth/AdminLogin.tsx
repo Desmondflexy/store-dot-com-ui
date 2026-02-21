@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { apiService } from "../../lib/api.service.ts";
 import { handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
-import { ROUTES_PATH } from "../../utils/constants";
+import { ROUTES_PATH } from "../../utils/routes.ts";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 

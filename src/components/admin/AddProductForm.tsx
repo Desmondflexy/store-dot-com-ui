@@ -6,7 +6,7 @@ import "./AddProductForm.css";
 import { toast } from "react-toastify";
 import { handleErrorToast } from "../../utils/helpers.ts";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_PATH } from "../../utils/constants.ts";
+import { ROUTES_PATH } from "../../utils/routes.ts";
 
 export default function AddProductForm() {
     const {

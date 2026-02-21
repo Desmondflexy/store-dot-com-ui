@@ -4,12 +4,12 @@ import { formatNumber, handleErrorToast, shortenText } from "../../utils/helpers
 import { toast } from "react-toastify";
 import "./ShopProductList.css";
 import CartButton from "./CartButton.tsx";
-import { useCart } from "../../hooks/cart.hook.ts";
 import { useCartActions } from "../../hooks/cart-actions.hook.ts";
+import { useAuth } from "../../hooks/auth.hook.ts";
 
 export default function ShopProductList() {
     const [data, setData] = useState<ProductResponse[]>([]);
-    const cartContext = useCart();
+    const { cart } = useAuth();
     const cartActions = useCartActions();
 
     useEffect(() => {
@@ -19,8 +19,6 @@ export default function ShopProductList() {
             handleErrorToast(err, toast);
         })
     }, []);
-
-    const cart = cartContext.cart;
 
     const isItemIncart = (productId: number) => {
         if (!cart) return false;

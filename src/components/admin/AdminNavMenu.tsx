@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { ROUTES_PATH } from "../../utils/constants";
+import { ROUTES_PATH } from "../../utils/routes";
 import "./AdminNavMenu.css";
 import Logout from "../auth/Logout";
 

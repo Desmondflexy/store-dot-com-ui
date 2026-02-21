@@ -1,0 +1,37 @@
+.checkout-form {
+    padding: 20px;
+
+    p, h2 {
+        text-align: center;
+    }
+
+    form {
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        margin: 0 auto;
+
+        /* label {
+            display: block;
+        }
+        input, select {
+            padding: 5px;
+            width: 400px;
+        }
+
+        &>div {
+            max-width: fit-content;
+            margin: 20px auto;
+        } */
+
+        .button {
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+    }
+}

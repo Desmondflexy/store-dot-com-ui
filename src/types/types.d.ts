@@ -35,3 +35,12 @@ type ProductResponse = {
     soldCount: number;
     stock: number;
 }
+
+type Address = {
+    id: number;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    note: string;
+}

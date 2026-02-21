@@ -2,19 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { formatNumber, getCartItemsCount, getCartTotal } from "../../utils/helpers";
 import CartButton from "./CartButton";
 import "./ShopCart.css";
-import { ROUTES_PATH } from "../../utils/constants";
+import { ROUTES_PATH } from "../../utils/routes";
 import { useCartActions } from "../../hooks/cart-actions.hook";
-import { useCart } from "../../hooks/cart.hook";
-import { useUser } from "../../hooks/user.hook";
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/auth.hook";
 
 export default function ShopCart() {
-    const cartContext = useCart();
+    const { cart, user } = useAuth();
     const cartActions = useCartActions();
     const navigate = useNavigate();
-    const userContext = useUser();
 
-    const cart = cartContext.cart;
     if (!cart) return <div className="shop-cart">
         <p>Empty cart! <Link to={ROUTES_PATH.SHOP_PRODUCTS}>Go to shop</Link></p>
     </div>
@@ -23,7 +20,7 @@ export default function ShopCart() {
     const cartTotal = formatNumber(getCartTotal(cart.items), 0);
 
     const handleCheckout = () => {
-        if (userContext.user) {
+        if (user) {
             const answer = confirm("Proceed to checkout?")
             if (answer === true) {
                 navigate(ROUTES_PATH.CHECKOUT);

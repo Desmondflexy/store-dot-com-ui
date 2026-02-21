@@ -1,9 +1,0 @@
-import { useContext } from "react";
-import { UserContext } from "../contexts/user.context";
-
-/**Get authenticated user details and setter function. */
-export function useUser() {
-    const context = useContext(UserContext);
-    if (!context) throw new Error("useUserHook must be used within a UserProvider");
-    return context;
-}

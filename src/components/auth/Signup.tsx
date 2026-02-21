@@ -1,26 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
-import { ROUTES_PATH } from "../../utils/constants";
+import { ROUTES_PATH } from "../../utils/routes.ts";
 import { useForm } from "react-hook-form";
 import { apiService } from "../../lib/api.service.ts";
 import { handleErrorToast } from "../../utils/helpers.ts";
 import { toast } from "react-toastify";
-import { useUser } from "../../hooks/user.hook.ts";
+import { useAuth } from "../../hooks/auth.hook.ts";
 
 export default function Signup() {
     const { register, handleSubmit } = useForm<RegisterInput>();
     const navigate = useNavigate();
     const guestCartId = localStorage.getItem("cartId");
-    const userContext = useUser();
+    const { login } = useAuth();
 
     const onSubmit = async (data: RegisterInput) => {
         try {
             const createData = { ...data, guestCartId: guestCartId || undefined }
             const res = await apiService.createCustomer(createData);
-            const { token, cartId, user } = res.data;
-            localStorage.setItem("token", token);
-            userContext.setUser(user);
-            localStorage.removeItem("cartId");
+            const { token, cartId } = res.data;
+            await login(token);
 
             if (cartId) {
                 navigate(ROUTES_PATH.SHOPPING_CART);

@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
-import { useCart } from "./cart.hook.ts";
 import { apiService } from "../lib/api.service.ts";
 import { getCartItemsCount, handleErrorToast } from "../utils/helpers.ts";
+import { useAuth } from "./auth.hook.ts";
 
 export function useCartActions() {
-    const { cart, setCart, setCount } = useCart();
+    const { cart, setCart, setCount } = useAuth();
 
     const add = (productId: number) => {
         const cartId = localStorage.getItem("cartId");

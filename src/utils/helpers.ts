@@ -74,3 +74,9 @@ export function getCartItemsCount(items: IItem[]) {
 export function getCartTotal(items: IItem[]) {
     return items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
 }
+
+export const broadcastLogin = () =>
+    localStorage.setItem("login-event", Date.now().toString());
+
+export const broadcastLogout = () =>
+    localStorage.setItem("logout-event", Date.now().toString());

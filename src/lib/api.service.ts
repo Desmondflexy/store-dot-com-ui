@@ -90,6 +90,14 @@ class ApiService {
     logout() {
         return this.Api.post("auth/logout");
     }
+
+    getUserAddress() {
+        return this.Api.get<Address[]>("user/address");
+    }
+
+    getShopAddress() {
+        return this.Api.get<Address[]>("user/address/shop");
+    }
 }
 
 export const apiService = new ApiService();

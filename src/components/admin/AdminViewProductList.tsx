@@ -4,7 +4,7 @@ import { handleErrorToast } from "../../utils/helpers.ts"
 import { toast } from "react-toastify"
 import "./AdminViewProductList.css"
 import { useNavigate } from "react-router-dom"
-import { ROUTES_PATH } from "../../utils/constants.ts"
+import { ROUTES_PATH } from "../../utils/routes.ts"
 
 export default function AdminViewProductList() {
     const [data, setData] = useState<dataResponse[]>([]);
