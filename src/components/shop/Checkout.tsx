@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 import { apiService } from "../../lib/api.service";
 
 export default function Checkout() {
-    const { register, handleSubmit, watch } = useForm();
+    const { register, handleSubmit, watch } = useForm<CheckoutForm>();
     const [userAddresses, setUserAddresses] = useState<Address[]>([]);
     const [shopAddresses, setShopAddresses] = useState<Address[]>([]);
 
     const deliveryMethod = watch("deliveryMethod");
 
-    const onSubmit = () => console.log("order created");
+    const onSubmit = (data: CheckoutForm) => {
+        console.log(data);
+    }
 
     useEffect(() => {
         apiService.getUserAddress().then(res => {
@@ -52,7 +54,7 @@ export default function Checkout() {
                 {
                     addresses.map(i => (
                         <div key={i.id}>
-                            <input {...register("deliveryAddressId")} id={`deliveryAddressId-${i.id}`} value={2} type="radio" required />
+                            <input {...register("deliveryAddressId")} id={`deliveryAddressId-${i.id}`} value={i.id} type="radio" required />
                             <label htmlFor={`deliveryAddressId-${i.id}`}>{i.street} {i.city}</label>
                         </div>
                     ))
@@ -81,9 +83,15 @@ export default function Checkout() {
             </fieldset>
 
             <div className="button">
-                <button>Create Order</button>
+                <button>Next</button>
             </div>
         </form>
         <p>Continue shopping? <Link to={ROUTES_PATH.SHOP_PRODUCTS}>Click here</Link></p>
     </div>
+}
+
+type CheckoutForm = {
+    deliveryMethod: string;
+    deliveryAddressId: string;
+    paymentMethod: string;
 }

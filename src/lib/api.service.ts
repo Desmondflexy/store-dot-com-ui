@@ -47,20 +47,20 @@ class ApiService {
         return this.Api.get(`product/${id}`);
     }
 
-    addItemToCart(payLoad: { productId: number; cartId?: string | null }) {
-        return this.Api.post<ICart>("cart", payLoad);
+    addItemToCart(payLoad: { productId: number; cartUuid?: string | null }) {
+        return this.Api.post<ICart>("cart/add-item", payLoad);
     }
 
-    removeItemFromCart(payload: { productId: number, cartId: string }) {
-        return this.Api.patch<ICart>("cart/remove", payload)
+    removeItemFromCart(payload: { productId: number, cartUuid: string }) {
+        return this.Api.patch<ICart>("cart/remove-item", payload)
     }
 
-    getCartByUuid(uuid: string) {
-        return this.Api.get<ICart>(`cart/${uuid}`);
+    removeItemFromUserCart(payload: { productId: number }) {
+        return this.Api.patch<ICart>("cart/user-remove-item", payload)
     }
 
     findGuestCart(uuid: string) {
-        return this.Api.get<ICart>(`cart/${uuid}/guest`);
+        return this.Api.get<ICart>(`cart/${uuid}/guest-cart`);
     }
 
     authMe() {
@@ -84,7 +84,7 @@ class ApiService {
     }
 
     getMyCart() {
-        return this.Api.get<ICart>("cart");
+        return this.Api.get<ICart>("cart/user-cart");
     }
 
     logout() {

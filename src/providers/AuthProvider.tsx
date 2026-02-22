@@ -2,69 +2,75 @@ import { useEffect, useState } from "react";
 import { apiService } from "../lib/api.service.ts";
 import { broadcastLogin, broadcastLogout, getCartItemsCount } from "../utils/helpers.ts";
 import { AuthContext } from "../contexts/auth.context.ts";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_PATH } from "../utils/routes.ts";
+import { toast } from "react-toastify";
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<UserResponse | null>(null);
     const [cart, setCart] = useState<ICart | null>(null);
     const [count, setCount] = useState(0);
+    const navigate = useNavigate();
 
-    const reloadSession = async () => {
+    const resetState = () => {
+        setUser(null);
+        setCart(null);
+        setCount(0);
+    }
+
+    const reloadSession = () => {
         const token = localStorage.getItem("token");
         const guestCartId = localStorage.getItem("cartId");
 
         if (!token && !guestCartId) {
-            setUser(null);
-            setCart(null);
-            setCount(0);
+            resetState();
             return;
         }
 
-        try {
-            if (token) {
-                const [profileRes, cartRes] = await Promise.all([
-                    apiService.getProfile(),
-                    apiService.getMyCart()
-                ]);
-
-                setUser(profileRes.data);
-                setCart(cartRes.data);
-                setCount(getCartItemsCount(cartRes.data.items));
-
+        if (token) {
+            apiService.getProfile().then(res => {
+                setUser(res.data);
                 localStorage.removeItem("cartId");
-            }
-            else if (guestCartId) {
-                const cartRes = await apiService.findGuestCart(guestCartId);
-                setCart(cartRes.data);
-                setCount(getCartItemsCount(cartRes.data.items));
+            }).catch(err => {
+                if (err.status === 401) {
+                    logout();
+                    toast.dark("Session expired, please login again");
+                    navigate(ROUTES_PATH.LOGIN);
+                    return;
+                }
+                resetState();
+            });
+
+            apiService.getMyCart().then(res => {
+                setCart(res.data);
+                setCount(getCartItemsCount(res.data.items));
+            }).catch((err) => {
+                console.log("error =>", err.message);
+                resetState();
+            });
+        } else if (guestCartId) {
+            apiService.findGuestCart(guestCartId).then(res => {
+                setCart(res.data);
+                setCount(getCartItemsCount(res.data.items));
                 setUser(null);
-            }
-        } catch {
-            setUser(null);
-            setCart(null);
-            setCount(0);
+            }).catch(() => {
+                resetState()
+            });
         }
     };
 
-    const login = async (token: string) => {
+    const login = (token: string) => {
         localStorage.setItem("token", token);
-        await reloadSession();
+        localStorage.removeItem("cartId");
+        reloadSession();
         broadcastLogin();
     };
 
-    const logout = async () => {
-        try {
-            await apiService.logout();
-        } catch {
-            // do nothing
-        }
-
+    const logout = () => {
+        apiService.logout().then().catch();
         localStorage.removeItem("token");
         localStorage.removeItem("cartId");
-
-        setUser(null);
-        setCart(null);
-        setCount(0);
-
+        resetState();
         broadcastLogout();
     };
 
@@ -78,9 +84,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             }
 
             if (event.key === "logout-event") {
-                setUser(null);
-                setCart(null);
-                setCount(0);
+                resetState()
             }
         };
 

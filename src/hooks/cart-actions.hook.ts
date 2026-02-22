@@ -1,19 +1,18 @@
 import { toast } from "react-toastify";
 import { apiService } from "../lib/api.service.ts";
-import { getCartItemsCount, handleErrorToast } from "../utils/helpers.ts";
+import { handleErrorToast } from "../utils/helpers.ts";
 import { useAuth } from "./auth.hook.ts";
 
 export function useCartActions() {
-    const { cart, setCart, setCount } = useAuth();
+    const { cart, reloadSession } = useAuth();
 
     const add = (productId: number) => {
-        const cartId = localStorage.getItem("cartId");
-        const payload = cartId ? { productId, cartId } : { productId };
+        const cartUuid = localStorage.getItem("cartId");
+        const payload = cartUuid ? { productId, cartUuid } : { productId };
         apiService.addItemToCart(payload).then(res => {
-            toast.success("added to cart successfully");
             localStorage.setItem("cartId", res.data.uuid);
-            setCart(res.data);
-            setCount(getCartItemsCount(res.data.items));
+            reloadSession();
+            toast.success("added to cart successfully");
         }).catch(err => {
             handleErrorToast(err, toast);
         })
@@ -21,14 +20,23 @@ export function useCartActions() {
 
     const remove = (productId: number) => {
         if (!cart) return;
-        const payLoad = { productId, cartId: cart.uuid }
-        apiService.removeItemFromCart(payLoad).then(res => {
-            setCart(res.data);
-            setCount(getCartItemsCount(res.data.items));
-            toast.success("Item removed from cart successfully")
-        }).catch(err => {
-            handleErrorToast(err, toast);
-        })
+        const cartUuid = localStorage.getItem("cartId");
+
+        if (cartUuid) {
+            apiService.removeItemFromCart({ productId, cartUuid }).then(() => {
+                reloadSession();
+                toast.success("Item removed from cart successfully")
+            }).catch(err => {
+                handleErrorToast(err, toast);
+            })
+        } else {
+            apiService.removeItemFromUserCart({ productId }).then(() => {
+                reloadSession();
+                toast.success("Item removed from cart successfully")
+            }).catch(err => {
+                handleErrorToast(err, toast);
+            })
+        }
     };
 
     return { add, remove };

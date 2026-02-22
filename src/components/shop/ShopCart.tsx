@@ -9,7 +9,7 @@ import { useAuth } from "../../hooks/auth.hook";
 
 export default function ShopCart() {
     const { cart, user } = useAuth();
-    const cartActions = useCartActions();
+    const { add, remove} = useCartActions();
     const navigate = useNavigate();
 
     if (!cart) return <div className="shop-cart">
@@ -21,10 +21,7 @@ export default function ShopCart() {
 
     const handleCheckout = () => {
         if (user) {
-            const answer = confirm("Proceed to checkout?")
-            if (answer === true) {
-                navigate(ROUTES_PATH.CHECKOUT);
-            }
+            navigate(ROUTES_PATH.CHECKOUT);
         } else {
             toast.dark("Pls login to continue");
             navigate(ROUTES_PATH.LOGIN);
@@ -56,8 +53,8 @@ export default function ShopCart() {
                             <td className="buttons">
                                 <CartButton
                                     qty={item.quantity}
-                                    onIncrease={() => cartActions.add(item.productId)}
-                                    onDecrease={() => cartActions.remove(item.productId)}
+                                    onIncrease={() => add(item.productId)}
+                                    onDecrease={() => remove(item.productId)}
                                 />
                             </td>
                             <td>{formatNumber(item.quantity * item.unitPrice, 0)}</td>

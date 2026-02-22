@@ -17,8 +17,8 @@ import Checkout from './components/shop/Checkout'
 
 export default function App() {
     return (
-        <AuthProvider>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <Routes>
                     <Route index element={<Navigate to="shop" />} />
                     <Route path="shop" element={<Shop />} >
@@ -42,7 +42,7 @@ export default function App() {
                     <Route path='*' element={<h1>Page not found!</h1>} />
                 </Routes>
                 <ToastContainer />
-            </BrowserRouter>
-        </AuthProvider>
+            </AuthProvider>
+        </BrowserRouter>
     )
 }

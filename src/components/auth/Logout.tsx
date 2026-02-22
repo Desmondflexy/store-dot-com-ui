@@ -7,8 +7,8 @@ export default function Logout() {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
-    const handleLogout = async () => {
-        await logout();
+    const handleLogout = () => {
+        logout();
         toast.success("You've been logged out");
         navigate(ROUTES_PATH.SHOP_PRODUCTS);
     }
