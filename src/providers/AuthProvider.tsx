@@ -31,6 +31,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             apiService.getProfile().then(res => {
                 setUser(res.data);
                 localStorage.removeItem("cartId");
+                setCart(res.data.cart);
+                setCount(getCartItemsCount(res.data.cart.items));
             }).catch(err => {
                 if (err.status === 401) {
                     logout();
@@ -40,20 +42,15 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 }
                 resetState();
             });
-
-            apiService.getMyCart().then(res => {
-                setCart(res.data);
-                setCount(getCartItemsCount(res.data.items));
-            }).catch((err) => {
-                console.log("error =>", err.message);
-                resetState();
-            });
         } else if (guestCartId) {
             apiService.findGuestCart(guestCartId).then(res => {
                 setCart(res.data);
                 setCount(getCartItemsCount(res.data.items));
                 setUser(null);
-            }).catch(() => {
+            }).catch(err => {
+                if (err.status === 404) {
+                    localStorage.removeItem("cartId");
+                }
                 resetState()
             });
         }
@@ -92,14 +89,14 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         return () => window.removeEventListener("storage", handleStorage);
     }, []);
 
-    const providerValue = {
+    const providers = {
         user, cart, count,
         login, logout,
         reloadSession,
         setCart, setCount,
     }
     return (
-        <AuthContext.Provider value={providerValue} >
+        <AuthContext.Provider value={providers} >
             {children}
         </AuthContext.Provider>
     );

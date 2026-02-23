@@ -83,10 +83,6 @@ class ApiService {
         return this.Api.get<UserResponse>("user/profile");
     }
 
-    getMyCart() {
-        return this.Api.get<ICart>("cart/user-cart");
-    }
-
     logout() {
         return this.Api.post("auth/logout");
     }

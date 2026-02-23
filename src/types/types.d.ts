@@ -1,7 +1,7 @@
 type ICart = {
-    id: number;
-    userId: number;
-    status: string;
+    // id: number;
+    // userId: number;
+    // status: string;
     uuid: string;
     items: IItem[];
 }
@@ -24,6 +24,7 @@ type UserResponse = {
     phone: string;
     role: string;
     createdAt: Date;
+    cart: ICart;
 }
 
 type ProductResponse = {

@@ -5,6 +5,7 @@ import { ROUTES_PATH } from "../../utils/routes.ts";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/auth.hook.ts";
+import { handleErrorToast } from "../../utils/helpers.ts";
 
 export default function Login() {
     const { register, handleSubmit } = useForm<LoginInput>();
@@ -13,18 +14,21 @@ export default function Login() {
 
     const { login } = useAuth();
 
-    const onSubmit = async (data: LoginInput) => {
+    const onSubmit = (data: LoginInput) => {
         const loginData = { ...data, guestCartId: guestCartId || undefined }
-        const res = await apiService.loginCustomer(loginData);
-        const { token, cartId } = res.data;
-        await login(token);
+        apiService.loginCustomer(loginData).then(res => {
+            const { token, cartId } = res.data;
+            login(token);
 
-        if (cartId) {
-            navigate(ROUTES_PATH.SHOPPING_CART);
-        } else {
-            navigate(ROUTES_PATH.SHOP);
-        }
-        toast.success("Login successful!")
+            if (cartId) {
+                navigate(ROUTES_PATH.SHOPPING_CART);
+            } else {
+                navigate(ROUTES_PATH.SHOP);
+            }
+            toast.success("Login successful!")
+        }).catch(err => {
+            handleErrorToast(err, toast)
+        })
     };
 
     return <div className="login">

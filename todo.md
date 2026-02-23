@@ -17,3 +17,4 @@
 - [ ] staff should change password on first login
 - [ ] customer can view their profile
 - [ ] customer forgot/reset password
+- [x] include cart in user response

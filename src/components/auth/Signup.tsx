@@ -13,21 +13,20 @@ export default function Signup() {
     const guestCartId = localStorage.getItem("cartId");
     const { login } = useAuth();
 
-    const onSubmit = async (data: RegisterInput) => {
-        try {
-            const createData = { ...data, guestCartId: guestCartId || undefined }
-            const res = await apiService.createCustomer(createData);
+    const onSubmit = (data: RegisterInput) => {
+        const createData = { ...data, guestCartId: guestCartId || undefined };
+        apiService.createCustomer(createData).then(res => {
             const { token, cartId } = res.data;
-            await login(token);
+            login(token);
 
             if (cartId) {
                 navigate(ROUTES_PATH.SHOPPING_CART);
             } else {
                 navigate(ROUTES_PATH.SHOP);
             }
-        } catch (err) {
+        }).catch(err => {
             handleErrorToast(err, toast);
-        }
+        })
     }
 
     return <div className="signup">
