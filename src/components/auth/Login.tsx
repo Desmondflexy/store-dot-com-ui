@@ -6,7 +6,7 @@ import { useAuth } from "../../hooks/auth.hook.ts";
 import { handleErrorToast } from "../../utils/helpers.ts";
 import { useState } from "react";
 
-export default function Login() {
+export default function Login({ role }: Props) {
     const navigate = useNavigate();
     const guestCartId = localStorage.getItem("cartId");
     const [form, setForm] = useState<LoginInput>({
@@ -17,7 +17,7 @@ export default function Login() {
 
     const { login } = useAuth();
 
-    const handleSubmit = () => {
+    const loginCustomer = () => {
         const loginData = {
             email, password,
             guestCartId: guestCartId || undefined
@@ -36,16 +36,35 @@ export default function Login() {
         }).catch(err => {
             handleErrorToast(err, toast)
         })
-    }
+    };
+
+    const loginAdmin = () => {
+        const loginData = { email, password }
+        apiService.adminLogin(loginData).then((res) => {
+            login(res.data.token);
+            navigate(ROUTES_PATH.ADMIN_DASHBOARD);
+        }).catch(err => {
+            handleErrorToast(err, toast);
+        })
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     }
 
+    const isAdmin = role === "admin";
+    const title = isAdmin ? "Admin Login" : "Welcome back!";
+    const submitHandler = isAdmin ? loginAdmin : loginCustomer;
+    const footer = isAdmin ? (
+        <p><Link to={ROUTES_PATH.HOME}>Go to main page</Link></p>
+    ) : (
+        <p>Don't have an account? <Link to={ROUTES_PATH.SIGNUP}>Signup</Link></p>
+    );
+
     return <div className="login">
-        <h2>Welcome back!</h2>
-        <form action={handleSubmit}>
+        <h2>{title}</h2>
+        <form action={submitHandler}>
             <p>Login to continue</p>
 
             <label>
@@ -61,7 +80,7 @@ export default function Login() {
                 <button>Login</button>
             </p>
         </form>
-        <p>Don't have an account? <Link to={ROUTES_PATH.SIGNUP}>Signup</Link></p>
+        {footer}
     </div>
 }
 
@@ -69,4 +88,8 @@ type LoginInput = {
     email: string;
     password: string;
     guestCartId?: string;
+}
+
+type Props = {
+    role: "admin" | "customer";
 }

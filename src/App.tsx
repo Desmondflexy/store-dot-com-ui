@@ -10,7 +10,6 @@ import AdminDashboard from './components/admin/AdminDashboard'
 import AddProductForm from './components/admin/AddProductForm'
 import AdminViewProductList from './components/admin/AdminViewProductList'
 import AdminProductInfo from './components/admin/AdminProductInfo'
-import AdminLogin from './components/auth/AdminLogin'
 import InProgress from './components/pages/InProgress'
 import AuthProvider from './providers/AuthProvider'
 import Checkout from './components/shop/Checkout'
@@ -25,12 +24,12 @@ export default function App() {
                         <Route index element={<Navigate to="products" />} />
                         <Route path="products" element={<ShopProductList />} />
                         <Route path="cart" element={<ShopCart />} />
-                        <Route path="login" element={<Login />} />
+                        <Route path="login" element={<Login role="customer" />} />
                         <Route path="signup" element={<Signup />} />
                         <Route path='checkout' element={<Checkout />} />
                         <Route path='profile' element={<InProgress />} />
                     </Route>
-                    <Route path="auth/admin-login" element={<AdminLogin />} />
+                    <Route path="auth/admin-login" element={<Login role="admin" />} />
                     <Route path={"admin"} element={<Admin />} >
                         <Route index element={<Navigate to="dashboard" />} />
                         <Route path="dashboard" element={<AdminDashboard />} />
