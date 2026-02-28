@@ -15,7 +15,7 @@ export default function AdminNavMenu() {
             <NavLink to={ROUTES_PATH.ADMIN_ADD_PRODUCT}>Add Product</NavLink>
         </li>
         <li>
-            <Logout />
+            <Logout role="admin" />
         </li>
     </ul>
 }

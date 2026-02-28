@@ -1,20 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import { ROUTES_PATH } from "../../utils/routes.ts";
-import { useForm } from "react-hook-form";
 import { apiService } from "../../lib/api.service.ts";
 import { handleErrorToast } from "../../utils/helpers.ts";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/auth.hook.ts";
+import { useState } from "react";
 
 export default function Signup() {
-    const { register, handleSubmit } = useForm<RegisterInput>();
     const navigate = useNavigate();
     const guestCartId = localStorage.getItem("cartId");
     const { login } = useAuth();
 
-    const onSubmit = (data: RegisterInput) => {
-        const createData = { ...data, guestCartId: guestCartId || undefined };
+    const [form, setForm] = useState<RegisterInput>({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirm: "",
+    });
+    const {firstName, lastName, email, phone, password, confirm } = form;
+
+    const handleSubmit = () => {
+        const createData: RegisterInput = {
+            firstName, lastName, email, phone,
+            password, confirm,
+            guestCartId: guestCartId || undefined,
+        }
         apiService.createCustomer(createData).then(res => {
             const { token, cartId } = res.data;
             login(token);
@@ -29,38 +42,43 @@ export default function Signup() {
         })
     }
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+    }
+
     return <div className="signup">
 
         <h2>Create an account</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form action={handleSubmit}>
             <p>Sign up to continue</p>
-            <div>
-                <label htmlFor="firstName">First Name</label>
-                <input {...register("firstName")} type="text" id="firstName" required />
-            </div>
-            <div>
-                <label htmlFor="lastName">Last Name</label>
-                <input {...register("lastName")} type="text" id="lastName" required />
-            </div>
-            <div>
-                <label htmlFor="email">Email</label>
-                <input {...register("email")} type="email" id="email" required />
-            </div>
-            <div>
-                <label htmlFor="phone">Phone</label>
-                <input {...register("phone")} type="tel" id="phone" required />
-            </div>
-            <div>
-                <label htmlFor="password">Password</label>
-                <input {...register("password")} type="password" id="password" required />
-            </div>
-            <div>
-                <label htmlFor="confirm">Confirm Password</label>
-                <input {...register("confirm")} type="password" id="confirm" required />
-            </div>
-            <div>
+            <label>
+                <span>First Name</span>
+                <input name="firstName" value={firstName} onChange={handleChange} required />
+            </label>
+            <label>
+                <span>Last Name</span>
+                <input name="lastName" value={lastName} onChange={handleChange} required />
+            </label>
+            <label>
+                <span>Email</span>
+                <input name="email" type="email" value={email} onChange={handleChange} required />
+            </label>
+            <label>
+                <span>Phone</span>
+                <input name="phone" type="tel" value={phone} onChange={handleChange} required />
+            </label>
+            <label>
+                <span>Password</span>
+                <input name="password" type="password" value={password} onChange={handleChange} required />
+            </label>
+            <label>
+                <span>Confirm Password</span>
+                <input name="confirm" type="password" value={confirm} onChange={handleChange} required />
+            </label>
+            <p>
                 <button>Register</button>
-            </div>
+            </p>
         </form>
         <p>Already have an account? <Link to={ROUTES_PATH.LOGIN}>Login</Link></p>
     </div>
@@ -73,4 +91,5 @@ type RegisterInput = {
     phone: string;
     password: string;
     confirm: string;
+    guestCartId?: string;
 }

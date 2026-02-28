@@ -24,7 +24,7 @@ type UserResponse = {
     phone: string;
     role: string;
     createdAt: Date;
-    cart: ICart;
+    cart: ICart | null;
 }
 
 type ProductResponse = {

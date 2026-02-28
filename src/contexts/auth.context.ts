@@ -11,4 +11,6 @@ type AuthContextType = {
     setCount: React.Dispatch<React.SetStateAction<number>>;
     setCart: React.Dispatch<React.SetStateAction<ICart | null>>;
     reloadSession: () => void;
+    removeItem: (productId: number) => void;
+    addItem: (productId: number) => void
 }

@@ -19,8 +19,8 @@ class ApiService {
     }
 
 
-    adminLogin(email: string, password: string) {
-        return this.Api.post("auth/admin-login", { email, password })
+    adminLogin(loginData: { email: string; password: string; }) {
+        return this.Api.post("auth/admin-login", loginData)
     }
 
     addProduct(productData: any) {
@@ -93,6 +93,10 @@ class ApiService {
 
     getShopAddress() {
         return this.Api.get<Address[]>("user/address/shop");
+    }
+
+    getRefreshToken() {
+        return this.Api.get<{ token: string }>("auth/refresh");
     }
 }
 

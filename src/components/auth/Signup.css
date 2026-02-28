@@ -1,6 +1,10 @@
 .signup, .login {
     padding: 20px;
 
+    * {
+        /* border: 1px solid red */
+    }
+
     p, h2 {
         text-align: center;
     }
@@ -13,7 +17,10 @@
         margin: 0 auto;
 
         label {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            max-width: fit-content;
+            margin: 20px auto;
         }
         input {
             padding: 5px;
@@ -21,13 +28,10 @@
             width: 400px;
         }
 
-        &>div {
-            max-width: fit-content;
-            margin: 20px auto;
-        }
-
         button {
             padding: 5px 10px
         }
+
+
     }
 }

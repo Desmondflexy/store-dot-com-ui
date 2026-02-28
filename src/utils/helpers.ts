@@ -1,4 +1,4 @@
-export function formatNumber(num: number, frac:number) {
+export function formatNumber(num: number, frac: number) {
     // num /= 100;
     const formattedNumber = new Intl.NumberFormat('en-US', {
         // style: 'currency',
@@ -67,7 +67,6 @@ export function shortenText(text: string, maxLength: number) {
 }
 
 export function getCartItemsCount(items: IItem[]) {
-    if (!items) return 0;
     return items.reduce((s, i) => s + i.quantity, 0);
 }
 
@@ -80,3 +79,16 @@ export const broadcastLogin = () =>
 
 export const broadcastLogout = () =>
     localStorage.setItem("logout-event", Date.now().toString());
+
+export const isTokenExpiringSoon = (token: string) => {
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const expiry = payload.exp * 1000;
+        const now = Date.now();
+
+        // Refresh if less than 10 minutes left
+        return expiry - now < 10 * 60 * 1000;
+    } catch {
+        return false;
+    }
+};

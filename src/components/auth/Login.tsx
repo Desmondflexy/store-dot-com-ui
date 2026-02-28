@@ -1,21 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./Signup.css";
 import { apiService } from "../../lib/api.service.ts";
 import { ROUTES_PATH } from "../../utils/routes.ts";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/auth.hook.ts";
 import { handleErrorToast } from "../../utils/helpers.ts";
+import { useState } from "react";
 
 export default function Login() {
-    const { register, handleSubmit } = useForm<LoginInput>();
     const navigate = useNavigate();
     const guestCartId = localStorage.getItem("cartId");
+    const [form, setForm] = useState<LoginInput>({
+        email: "",
+        password: "",
+    });
+    const { email, password } = form;
 
     const { login } = useAuth();
 
-    const onSubmit = (data: LoginInput) => {
-        const loginData = { ...data, guestCartId: guestCartId || undefined }
+    const handleSubmit = () => {
+        const loginData = {
+            email, password,
+            guestCartId: guestCartId || undefined
+        }
+
         apiService.loginCustomer(loginData).then(res => {
             const { token, cartId } = res.data;
             login(token);
@@ -29,27 +36,37 @@ export default function Login() {
         }).catch(err => {
             handleErrorToast(err, toast)
         })
-    };
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+    }
 
     return <div className="login">
         <h2>Welcome back!</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form action={handleSubmit}>
             <p>Login to continue</p>
 
-            <div>
-                <label htmlFor="email">Email</label>
-                <input {...register("email")} type="email" id="email" required />
-            </div>
-            <div>
-                <label htmlFor="password">Password</label>
-                <input {...register("password")} type="password" id="password" required />
-            </div>
-            <div>
+            <label>
+                <span>Email</span>
+                <input name="email" value={email} onChange={handleChange} type="email" required />
+            </label>
+
+            <label>
+                <span>Password</span>
+                <input name="password" value={password} onChange={handleChange} type="password" required />
+            </label>
+            <p>
                 <button>Login</button>
-            </div>
+            </p>
         </form>
         <p>Don't have an account? <Link to={ROUTES_PATH.SIGNUP}>Signup</Link></p>
     </div>
 }
 
-type LoginInput = { email: string; password: string }
+type LoginInput = {
+    email: string;
+    password: string;
+    guestCartId?: string;
+}

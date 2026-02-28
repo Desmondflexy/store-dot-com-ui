@@ -1,11 +1,16 @@
 import "./ShopNavMenu.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "../../utils/routes";
 import Logout from "../auth/Logout";
 import { useAuth } from "../../hooks/auth.hook";
 
 export default function ShopNavMenu() {
     const { count, user } = useAuth();
+    const navigate = useNavigate();
+
+    const handleDoubleClick = () => {
+        navigate(ROUTES_PATH.ADMIN_LOGIN);
+    }
 
     return <ul className="shop-nav-menu">
         <li>
@@ -16,8 +21,8 @@ export default function ShopNavMenu() {
         </li>
         <li>
             {user
-                ? <><NavLink to={ROUTES_PATH.PROFILE}>{user.firstName}</NavLink> <Logout /></>
-                : <><NavLink to={ROUTES_PATH.LOGIN}>Login</NavLink> | <NavLink to={ROUTES_PATH.SIGNUP}>Register</NavLink></>
+                ? <><NavLink to={ROUTES_PATH.PROFILE}>{user.firstName}</NavLink> <Logout role="customer" /></>
+                : <><NavLink onDoubleClick={handleDoubleClick} to={ROUTES_PATH.LOGIN}>Login</NavLink> | <NavLink to={ROUTES_PATH.SIGNUP}>Register</NavLink></>
             }
         </li>
     </ul>

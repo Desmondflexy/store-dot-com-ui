@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "../../utils/routes";
 import "./Checkout.css";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ export default function Checkout() {
     const { register, handleSubmit, watch } = useForm<CheckoutForm>();
     const [userAddresses, setUserAddresses] = useState<Address[]>([]);
     const [shopAddresses, setShopAddresses] = useState<Address[]>([]);
+    const navigate = useNavigate();
 
     const deliveryMethod = watch("deliveryMethod");
 
@@ -19,6 +20,11 @@ export default function Checkout() {
     useEffect(() => {
         apiService.getUserAddress().then(res => {
             setUserAddresses(res.data);
+        }).catch(err => {
+            if (err.status === 401) {
+                navigate(ROUTES_PATH.LOGIN);
+                return;
+            }
         })
         apiService.getShopAddress().then(res => {
             setShopAddresses(res.data);

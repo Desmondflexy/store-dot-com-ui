@@ -4,37 +4,38 @@ import { handleErrorToast } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "../../utils/routes.ts";
 import { Link, useNavigate } from "react-router-dom";
-import "./AdminLogin.css";
+import { useAuth } from "../../hooks/auth.hook.ts";
 
 export default function AdminLogin() {
-    console.log(123)
     const { register, handleSubmit } = useForm<LoginInput>();
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     function onSubmit(data: LoginInput) {
-        apiService.adminLogin(data.email, data.password).then((res) => {
-            localStorage.setItem("token", res.data.token);
+        apiService.adminLogin(data).then((res) => {
+            login(res.data.token);
             navigate(ROUTES_PATH.ADMIN_DASHBOARD);
         }).catch(err => {
             handleErrorToast(err, toast);
         })
     }
 
-    return <div className="admin-login">
+    return <div className="login">
         <h2>Admin Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor="email">Email</label>
-                <input {...register("email")} type="text" placeholder="Email" name="email" id="email" required />
-            </div>
-            <div>
-                <label htmlFor="password">Password</label>
-                <input {...register("password")} type="password" placeholder="Password" name="password" id="password" required />
-            </div>
-            <div><button>Login</button></div>
+            <label>
+                <span>Email</span>
+                <input {...register("email")} type="email" name="email" required />
+            </label>
+            <label>
+                <span>Password</span>
+                <input {...register("password")} type="password" name="password" required />
+            </label>
+
+            <p><button>Login</button></p>
         </form>
-        <Link to={ROUTES_PATH.HOME}>Go to main page</Link>
+        <p><Link to={ROUTES_PATH.HOME}>Go to main page</Link></p>
     </div>
 }
 

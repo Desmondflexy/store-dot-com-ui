@@ -4,13 +4,11 @@ import { formatNumber, handleErrorToast, shortenText } from "../../utils/helpers
 import { toast } from "react-toastify";
 import "./ShopProductList.css";
 import CartButton from "./CartButton.tsx";
-import { useCartActions } from "../../hooks/cart-actions.hook.ts";
 import { useAuth } from "../../hooks/auth.hook.ts";
 
 export default function ShopProductList() {
     const [data, setData] = useState<ProductResponse[]>([]);
-    const { cart } = useAuth();
-    const cartActions = useCartActions();
+    const { cart, addItem, removeItem } = useAuth();
 
     useEffect(() => {
         apiService.viewProductList().then(res => {
@@ -43,8 +41,8 @@ export default function ShopProductList() {
                     <div className="buttons">
                         {
                             isItemIncart(product.id)
-                                ? <CartButton qty={getItemQty(product.id)} onIncrease={() => cartActions.add(product.id)} onDecrease={() => cartActions.remove(product.id)} />
-                                : <button style={{ width: "100px" }} onClick={() => cartActions.add(product.id)}>Add to cart</button>
+                                ? <CartButton qty={getItemQty(product.id)} onIncrease={() => addItem(product.id)} onDecrease={() => removeItem(product.id)} />
+                                : <button style={{ width: "100px" }} onClick={() => addItem(product.id)}>Add to cart</button>
                         }
                     </div>
                 </li>

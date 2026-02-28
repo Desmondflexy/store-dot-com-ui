@@ -3,13 +3,11 @@ import { formatNumber, getCartItemsCount, getCartTotal } from "../../utils/helpe
 import CartButton from "./CartButton";
 import "./ShopCart.css";
 import { ROUTES_PATH } from "../../utils/routes";
-import { useCartActions } from "../../hooks/cart-actions.hook";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/auth.hook";
 
 export default function ShopCart() {
-    const { cart, user } = useAuth();
-    const { add, remove} = useCartActions();
+    const { cart, user, addItem, removeItem } = useAuth();
     const navigate = useNavigate();
 
     if (!cart) return <div className="shop-cart">
@@ -53,8 +51,8 @@ export default function ShopCart() {
                             <td className="buttons">
                                 <CartButton
                                     qty={item.quantity}
-                                    onIncrease={() => add(item.productId)}
-                                    onDecrease={() => remove(item.productId)}
+                                    onIncrease={() => addItem(item.productId)}
+                                    onDecrease={() => removeItem(item.productId)}
                                 />
                             </td>
                             <td>{formatNumber(item.quantity * item.unitPrice, 0)}</td>
